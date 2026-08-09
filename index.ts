@@ -15,6 +15,9 @@ dotenv.config();
 // que alguien hace una petición en algún lugar
 app.use(express.static('public'));
 
+// Lectura y parseo del body
+app.use(express.json());
+
 /// Rutas
 // TODO: auth// crear, login, renew token
 app.use('/api/auth', router);
