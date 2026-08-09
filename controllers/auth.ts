@@ -1,17 +1,7 @@
-import { request, response } from 'express';
-import { validationResult } from 'express-validator';
+import { type Request, type Response } from 'express';
 
-export const createUser = (req = request, res = response) => {
+export const createUser = (req: Request, res: Response) => {
     const { name, email, password } = req.body;
-
-    // Manejo de errores
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({
-            ok: false,
-            errors: errors.mapped() // para serializar los errores
-        });
-    }
 
     res.status(201).json({
         ok: true,
@@ -22,17 +12,8 @@ export const createUser = (req = request, res = response) => {
     });
 };
 
-export const loginUser = (req = request, res = response) => {
+export const loginUser = (req: Request, res: Response) => {
     const { email, password } = req.body;
-
-    // Manejo de errores
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({
-            ok: false,
-            errors: errors.mapped() // para serializar los errores
-        });
-    }
 
     res.status(201).json({
         ok: true,
@@ -42,7 +23,7 @@ export const loginUser = (req = request, res = response) => {
     });
 };
 
-export const renewToken = (req = request, res = response) => {
+export const renewToken = (req: Request, res: Response) => {
     res.json({
         ok: true,
         msg: 'renew'
