@@ -2,21 +2,32 @@ import { type Request, type Response } from 'express';
 import { Usuario } from '../models/Usuario';
 
 export const createUser = async (req: Request, res: Response) => {
-    // const { name, email, password } = req.body;
+    const { name, email, password } = req.body;
     try {
-        const usuario = new Usuario(req.body); // Crear la instancia
-    
-        // Guardar en la BD
+        let usuario = await Usuario.findOne({ email });
+        console.log(usuario);
+
+        if (usuario) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Ya existe un usuario con ese email'
+            });
+        }
+
+        usuario = new Usuario(req.body); // Crear la instancia
+
+        //Guardar en la BD
         await usuario.save();
-    
+
         res.status(201).json({
             ok: true,
-            msg: 'registro'
+            uid: usuario.id,
+            name: usuario.name
         });
     } catch (error) {
         console.log(error);
-        
-         res.status(500).json({
+
+        res.status(500).json({
             ok: false,
             msg: 'Por favor hable con el admin'
         });
