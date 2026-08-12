@@ -15,8 +15,6 @@ export const createUser = async (req: Request, res: Response) => {
             });
         };
 
-
-
         usuario = new Usuario(req.body); // Crear la instancia
 
         // Encriptar password
@@ -42,8 +40,46 @@ export const createUser = async (req: Request, res: Response) => {
 
 };
 
-export const loginUser = (req: Request, res: Response) => {
+export const loginUser = async (req: Request, res: Response) => {
     const { email, password } = req.body;
+
+    try {
+        // Verificar si existe el usuario
+        let usuario = await Usuario.findOne({ email });
+        console.log(usuario);
+
+        if (!usuario) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'El usuario no existe'
+            });
+        };
+
+        // Confirmar password
+        const validPassword = bcrypt.compareSync(password, usuario.password);
+
+        if (!validPassword) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Password incoreccto'
+            });
+        };
+
+        // Generar JWT
+
+        res.status(201).json({
+            ok: true,
+            uid: usuario.id,
+            name: usuario.name
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Por favor hable con el admin'
+        });
+    }
 
     res.status(201).json({
         ok: true,
