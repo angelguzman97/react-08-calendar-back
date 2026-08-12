@@ -1,15 +1,27 @@
 import { type Request, type Response } from 'express';
+import { Usuario } from '../models/Usuario';
 
-export const createUser = (req: Request, res: Response) => {
-    const { name, email, password } = req.body;
+export const createUser = async (req: Request, res: Response) => {
+    // const { name, email, password } = req.body;
+    try {
+        const usuario = new Usuario(req.body); // Crear la instancia
+    
+        // Guardar en la BD
+        await usuario.save();
+    
+        res.status(201).json({
+            ok: true,
+            msg: 'registro'
+        });
+    } catch (error) {
+        console.log(error);
+        
+         res.status(500).json({
+            ok: false,
+            msg: 'Por favor hable con el admin'
+        });
+    }
 
-    res.status(201).json({
-        ok: true,
-        msg: 'registro',
-        name,
-        email,
-        password
-    });
 };
 
 export const loginUser = (req: Request, res: Response) => {

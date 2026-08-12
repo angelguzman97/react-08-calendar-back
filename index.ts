@@ -4,7 +4,8 @@ import dotenv from 'dotenv';
 import router from './routes/auth';
 import { dbConnection } from './database/config';
 
-dotenv.config();
+dotenv.config(); // Debe estar por encima de todos para conectarse a la bd
+
 // crear servidor de express
 const app = express();
 
