@@ -2,11 +2,15 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import router from './routes/auth';
+import { dbConnection } from './database/config';
 
+dotenv.config();
 // crear servidor de express
 const app = express();
 
-dotenv.config();
+// BD
+dbConnection();
+
 
 // Ver los procesos que estan corriendo
 // console.log(process.env);
