@@ -1,6 +1,6 @@
 import { type Request, type Response } from 'express';
 import bcrypt from 'bcryptjs';
-import { Usuario } from '../models/Usuario';
+import { Usuario } from '../models/Usuario.js';
 import { generateJWT } from '../helpers/jwt.js';
 
 export const createUser = async (req: Request, res: Response) => {
@@ -96,9 +96,15 @@ export const loginUser = async (req: Request, res: Response) => {
     });
 };
 
-export const renewToken = (req: Request, res: Response) => {
+export const renewToken = async (req: Request, res: Response) => {
+
+    const { uid, name } = req;
+
+    // Generar JWT
+    const token = await generateJWT(uid || "", name || "");
+
     res.json({
         ok: true,
-        msg: 'renew'
+        token
     });
 }
