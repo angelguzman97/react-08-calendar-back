@@ -1,4 +1,5 @@
 import { type Request, type Response } from 'express';
+import bcrypt from 'bcryptjs';
 import { Usuario } from '../models/Usuario';
 
 export const createUser = async (req: Request, res: Response) => {
@@ -12,9 +13,15 @@ export const createUser = async (req: Request, res: Response) => {
                 ok: false,
                 msg: 'Ya existe un usuario con ese email'
             });
-        }
+        };
+
+
 
         usuario = new Usuario(req.body); // Crear la instancia
+
+        // Encriptar password
+        const salt = bcrypt.genSaltSync();
+        usuario.password = bcrypt.hashSync(password, salt);
 
         //Guardar en la BD
         await usuario.save();
