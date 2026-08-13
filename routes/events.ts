@@ -4,6 +4,8 @@
 import express from "express";
 import { createEvento, deleteEvento, getEventos, updateEvento } from "../controllers/events.js";
 import { validateJWT } from "../middlewares/validar-jwt.js";
+import { check } from "express-validator";
+import { validarCampos } from "../middlewares/validar-campos.js";
 
 const routerEvent: express.Router = express.Router();
 
@@ -15,7 +17,14 @@ routerEvent.use(validateJWT);
 routerEvent.get('/', getEventos);
 
 // crear evento
-routerEvent.post('/', createEvento);
+routerEvent.post('/', [
+    check('title', 'El titulo es obligatorio').notEmpty(),
+    check('start', 'El fecha de inicio es obligatorio').isDate(),
+    check('end', 'El fecha de finalización es obligatorio').isDate(),
+    
+    validarCampos
+],
+    createEvento);
 
 // actualizar evento
 routerEvent.put('/:id', updateEvento);
