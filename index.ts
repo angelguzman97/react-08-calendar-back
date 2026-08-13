@@ -3,6 +3,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import router from './routes/auth.js';
+import routerEvent from './routes/events.js';
 import { dbConnection } from './database/config.js';
 
 dotenv.config(); // Debe estar por encima de todos para conectarse a la bd
@@ -31,6 +32,7 @@ app.use(express.json());
 app.use('/api/auth', router);
 
 // TODO: CRUD: Events
+app.use('/api/events', routerEvent);
 
 // Escuchar peticiones
 app.listen(process.env.PORT, () => {
