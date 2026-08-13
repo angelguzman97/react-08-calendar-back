@@ -13,7 +13,7 @@ export const generateJWT = (uid: string, name: string) => {
             (err, token) => {
                 // Si existe un error
                 if (err) {
-                    console.log(err);
+                    console.log("Error log:", err);
                     reject('No se pudo generar el token');
                 }
 

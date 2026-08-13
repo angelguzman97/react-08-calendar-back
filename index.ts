@@ -1,8 +1,9 @@
 //TODO: Como no es JS, para poder usar ciertas librerias/paqutes/dependencias se tienen que importar antes de usarlos.
 import express from 'express';
 import dotenv from 'dotenv';
-import router from './routes/auth';
-import { dbConnection } from './database/config';
+import cors from 'cors';
+import router from './routes/auth.js';
+import { dbConnection } from './database/config.js';
 
 dotenv.config(); // Debe estar por encima de todos para conectarse a la bd
 
@@ -12,6 +13,8 @@ const app = express();
 // BD
 dbConnection();
 
+// CORS
+app.use(cors());
 
 // Ver los procesos que estan corriendo
 // console.log(process.env);
