@@ -7,6 +7,10 @@ export const getEventos = (req: Request, res: Response) => {
     });
 };
 export const createEvento = (req: Request, res: Response) => {
+    //Verificar que tenga el evento
+    console.log(req.body);
+
+
     res.json({
         ok: true,
         msg: 'Crear evento'
