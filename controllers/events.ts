@@ -2,10 +2,13 @@ import type { Request, Response } from "express";
 import { Evento } from "../models/Eventos.js";
 import { Types } from "mongoose";
 
-export const getEventos = (req: Request, res: Response) => {
+export const getEventos = async (req: Request, res: Response) => {
+    const eventos = await Evento.find()
+        .populate('user', 'name'); // para indicar que informacion se requiere del atributo, en este caso del user se requiere el id y el name
+
     res.json({
         ok: true,
-        msg: 'Obtener eventos'
+        eventos
     });
 };
 export const createEvento = async (req: Request, res: Response) => {
