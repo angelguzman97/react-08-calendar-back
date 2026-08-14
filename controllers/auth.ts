@@ -86,13 +86,6 @@ export const loginUser = async (req: Request, res: Response) => {
             msg: 'Por favor hable con el admin'
         });
     }
-
-    res.status(201).json({
-        ok: true,
-        msg: 'login',
-        email,
-        password
-    });
 };
 
 export const renewToken = async (req: Request, res: Response) => {

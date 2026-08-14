@@ -1,4 +1,6 @@
 import type { Request, Response } from "express";
+import { Evento } from "../models/Eventos.js";
+import { Types } from "mongoose";
 
 export const getEventos = (req: Request, res: Response) => {
     res.json({
@@ -6,9 +8,27 @@ export const getEventos = (req: Request, res: Response) => {
         msg: 'Obtener eventos'
     });
 };
-export const createEvento = (req: Request, res: Response) => {
-    //Verificar que tenga el evento
-    console.log(req.body);
+export const createEvento = async (req: Request, res: Response) => {
+    // Guardar en la BD
+    const evento = new Evento(req.body);
+
+    try {
+        // Para obtener el id del usuario
+        evento.user = new Types.ObjectId(req.uid);
+
+        const eventoGuardado = await evento.save();
+        res.status(201).json({
+            ok: true,
+            evento: eventoGuardado
+        });
+    } catch (error) {
+        console.log(error);
+
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el admin'
+        });
+    }
 
 
     res.json({

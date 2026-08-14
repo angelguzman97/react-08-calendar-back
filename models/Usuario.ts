@@ -9,16 +9,16 @@ export interface UsuarioModel extends Document {
 const UsuarioSchema = new Schema<UsuarioModel>({
     name: {
         type: String,
-        require: true
+        required: true
     },
     email: {
         type: String,
-        require: true,
+        required: true,
         unique: true
     },
     password: {
         type: String,
-        require: true
+        required: true
     }
 });
 
