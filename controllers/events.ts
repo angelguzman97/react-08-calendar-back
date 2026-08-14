@@ -11,6 +11,7 @@ export const getEventos = async (req: Request, res: Response) => {
         eventos
     });
 };
+
 export const createEvento = async (req: Request, res: Response) => {
     // Guardar en la BD
     const evento = new Evento(req.body);
@@ -34,6 +35,7 @@ export const createEvento = async (req: Request, res: Response) => {
     }
 
 };
+
 export const updateEvento = async (req: Request, res: Response) => {
 
     const eventoId = req.params.id;
@@ -43,15 +45,11 @@ export const updateEvento = async (req: Request, res: Response) => {
         const evento = await Evento.findById(eventoId);
 
         if (!evento) {
-            res.status(404).json({
+            return res.status(404).json({
                 ok: false,
                 msg: 'Evento no existe por ese id'
             });
         };
-
-        console.log(evento?.user.toString());
-        console.log(uid);
-
 
         if (evento?.user.toString() !== uid) {
             return res.status(401).json({
@@ -85,15 +83,41 @@ export const updateEvento = async (req: Request, res: Response) => {
             msg: 'Hable con el admin'
         });
     }
-
-    res.json({
-        ok: true,
-        msg: 'Actualizar evento'
-    });
 };
-export const deleteEvento = (req: Request, res: Response) => {
-    res.json({
-        ok: true,
-        msg: 'Eliminar evento'
-    });
+
+export const deleteEvento = async (req: Request, res: Response) => {
+    const eventoId = req.params.id;
+    const uid = req.uid;
+
+    try {
+        const evento = await Evento.findById(eventoId);
+
+        if (!evento) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Evento no existe por ese id'
+            });
+        };
+
+        if (evento?.user.toString() !== uid) {
+            return res.status(401).json({
+                ok: false,
+                msg: 'No tiene privilegio de eliminar este evento'
+            });
+        };
+
+        await Evento.findByIdAndDelete(eventoId); // id de lo que se va a eliminar
+
+        res.status(201).json({
+            ok: true,
+            msg: 'Evento eliminado'
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el admin'
+        });
+    }
 };
