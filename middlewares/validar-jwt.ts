@@ -10,8 +10,6 @@ export const validateJWT = (req: Request, res: Response, next: NextFunction) => 
     //para leer header es x-token. Es se quiere que sea
     const token = req.header('x-token');
 
-    // console.log("token", token);
-
     // Validar el token
     if (!token) {
         return res.status(401).json({
@@ -33,8 +31,7 @@ export const validateJWT = (req: Request, res: Response, next: NextFunction) => 
             ok: false,
             msg: 'Token no válido'
         });
-    }
-
+    };
 
     next();
 }

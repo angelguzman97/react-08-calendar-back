@@ -17,8 +17,6 @@ dbConnection();
 // CORS
 app.use(cors());
 
-// Ver los procesos que estan corriendo
-// console.log(process.env);
 // Mostrar directorio público (HTML)
 // use es como un middleware. middleware es una función que se ejecuta en el momento
 // que alguien hace una petición en algún lugar
