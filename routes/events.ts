@@ -21,13 +21,17 @@ routerEvent.post('/', [
     check('title', 'El titulo es obligatorio').notEmpty(),
     check('start', 'El fecha de inicio es obligatorio').isDate(),
     check('end', 'El fecha de finalización es obligatorio').isDate(),
-    
+
     validarCampos
 ],
     createEvento);
 
 // actualizar evento
-routerEvent.put('/:id', updateEvento);
+routerEvent.put('/:id', [
+    check('title', 'El titulo es obligatorio').notEmpty(),
+    check('start', 'El fecha de inicio es obligatorio').isDate(),
+    check('end', 'El fecha de finalización es obligatorio').isDate(),
+], validarCampos, updateEvento);
 
 // borrar evento
 routerEvent.delete('/:id', deleteEvento);

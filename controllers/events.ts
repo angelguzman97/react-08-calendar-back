@@ -33,13 +33,59 @@ export const createEvento = async (req: Request, res: Response) => {
         });
     }
 
-
-    res.json({
-        ok: true,
-        msg: 'Crear evento'
-    });
 };
-export const updateEvento = (req: Request, res: Response) => {
+export const updateEvento = async (req: Request, res: Response) => {
+
+    const eventoId = req.params.id;
+    const uid = req.uid;
+
+    try {
+        const evento = await Evento.findById(eventoId);
+
+        if (!evento) {
+            res.status(404).json({
+                ok: false,
+                msg: 'Evento no existe por ese id'
+            });
+        };
+
+        console.log(evento?.user.toString());
+        console.log(uid);
+
+
+        if (evento?.user.toString() !== uid) {
+            return res.status(401).json({
+                ok: false,
+                msg: 'No tiene privilegio de editar este evento'
+            });
+        };
+
+        const newEvent = {
+            ...req.body,
+            user: uid
+        };
+
+        const eventoActualizado = await Evento.findByIdAndUpdate(
+            eventoId, // id de lo que se va a actualizar
+            newEvent, // la data actualizada
+            { new: true } // mostrar los datos actualizado
+        )
+            .populate('user', 'name');
+
+
+        res.status(201).json({
+            ok: true,
+            evento: eventoActualizado
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el admin'
+        });
+    }
+
     res.json({
         ok: true,
         msg: 'Actualizar evento'
