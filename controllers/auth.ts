@@ -89,13 +89,15 @@ export const loginUser = async (req: Request, res: Response) => {
 };
 
 export const renewToken = async (req: Request, res: Response) => {
-    const {uid, name} = req;
+    const { uid, name } = req;
 
     // Generar JWT
     const token = await generateJWT(uid || "", name || "");
 
     res.json({
         ok: true,
+        uid,
+        name,
         token
     });
 }
