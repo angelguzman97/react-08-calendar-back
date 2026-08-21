@@ -74,7 +74,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
         res.status(201).json({
             ok: true,
-            uid: usuario.id,
+            id: usuario.id, // era uid
             name: usuario.name,
             token
         });
