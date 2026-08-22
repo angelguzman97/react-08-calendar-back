@@ -1,10 +1,11 @@
 //TODO: Como no es JS, para poder usar ciertas librerias/paqutes/dependencias se tienen que importar antes de usarlos.
-import express from 'express';
+import express, { type Request, type Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import router from './routes/auth.js';
 import routerEvent from './routes/events.js';
 import { dbConnection } from './database/config.js';
+import path from 'path';
 
 dotenv.config(); // Debe estar por encima de todos para conectarse a la bd
 
@@ -31,6 +32,11 @@ app.use('/api/auth', router);
 
 // TODO: CRUD: Events
 app.use('/api/events', routerEvent);
+
+//Apuntar donde esta la app del front (dist)
+app.use('*', (req: Request, res: Response) => {
+    res.sendFile(path.join(__dirname, 'public/index.html'));
+});
 
 // Escuchar peticiones
 app.listen(process.env.PORT, () => {
