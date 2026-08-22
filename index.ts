@@ -34,7 +34,7 @@ app.use('/api/auth', router);
 app.use('/api/events', routerEvent);
 
 //Apuntar donde esta la app del front (dist)
-app.use('*', (req: Request, res: Response) => {
+app.use((req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
